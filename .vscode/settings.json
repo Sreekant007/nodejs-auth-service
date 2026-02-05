@@ -4,7 +4,16 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": ["typescript"],
+  "eslint.validate": [
+    "typescript"
+  ],
   "eslint.experimental.useFlatConfig": true,
-  "prettier.requireConfig": true
+  "prettier.requireConfig": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/node_modules/*",
+    "**/dist/*"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

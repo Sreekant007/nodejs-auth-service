@@ -2,7 +2,9 @@
   "compilerOptions": {
     /* Language & Environment */
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     /* Module System */
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -23,9 +25,43 @@
     /* Alias*/
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@controllers/*": [
+        "src/controllers/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@routes/*": [
+        "src/routes/*"
+      ],
+      "@middlewares/*": [
+        "src/middlewares/*"
+      ],
+      "@errors/*": [
+        "src/errors/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

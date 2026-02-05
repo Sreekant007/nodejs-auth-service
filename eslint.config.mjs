@@ -8,6 +8,18 @@ export default [
 
   {
     files: ['**/*.ts'],
+    pathGroups: [
+      { pattern: '@/**', group: 'internal' },
+      { pattern: '@config/**', group: 'internal' },
+      { pattern: '@controllers/**', group: 'internal' },
+      { pattern: '@services/**', group: 'internal' },
+      { pattern: '@routes/**', group: 'internal' },
+      { pattern: '@middlewares/**', group: 'internal' },
+      { pattern: '@errors/**', group: 'internal' },
+      { pattern: '@utils/**', group: 'internal' },
+      { pattern: '@constants/**', group: 'internal' },
+      { pattern: '@types/**', group: 'internal' }
+    ],
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
@@ -55,7 +67,6 @@ export default [
       ],
     },
   },
-
   {
     ignores: ['dist', 'node_modules'],
   },
