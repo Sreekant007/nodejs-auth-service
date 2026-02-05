@@ -1,0 +1,38 @@
+{
+  "name": "nodejs-auth-service",
+  "version": "1.0.0",
+  "description": "Production-ready Node.js authentication service demonstrating JWT-based auth, role-based access control, clean architecture, and backend best practices.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.19.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sreekant007/nodejs-auth-service.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "typescript",
+    "authentication",
+    "jwt",
+    "backend"
+  ],
+  "author": "Shrikant Govande",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sreekant007/nodejs-auth-service/issues"
+  },
+  "homepage": "https://github.com/Sreekant007/nodejs-auth-service#readme",
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

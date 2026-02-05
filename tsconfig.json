@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    /* Language & Environment */
+    "target": "ES2022",
+    "lib": [
+      "ES2022"
+    ],
+    /* Module System */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    /* Project Structure */
+    "rootDir": "src",
+    "outDir": "dist",
+    /* Type Safety */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    /* Interop & DX */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    /* Build */
+    "noEmitOnError": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
