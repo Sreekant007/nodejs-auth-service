@@ -21,7 +21,14 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     /* Build */
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    /* Alias*/
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
   },
   "include": [
     "src"
