@@ -8,18 +8,6 @@ export default [
 
   {
     files: ['**/*.ts'],
-    pathGroups: [
-      { pattern: '@/**', group: 'internal' },
-      { pattern: '@config/**', group: 'internal' },
-      { pattern: '@controllers/**', group: 'internal' },
-      { pattern: '@services/**', group: 'internal' },
-      { pattern: '@routes/**', group: 'internal' },
-      { pattern: '@middlewares/**', group: 'internal' },
-      { pattern: '@errors/**', group: 'internal' },
-      { pattern: '@utils/**', group: 'internal' },
-      { pattern: '@constants/**', group: 'internal' },
-      { pattern: '@types/**', group: 'internal' }
-    ],
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
@@ -31,7 +19,12 @@ export default [
     },
     rules: {
       // General
-      'no-console': 'off',
+      'no-console': [
+        'error',
+        {
+          allow: ['warn', 'error'],
+        },
+      ],
       'no-unused-vars': 'off',
 
       // TypeScript
@@ -52,10 +45,16 @@ export default [
         {
           groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
           pathGroups: [
-            {
-              pattern: '@/**',
-              group: 'internal',
-            },
+            { pattern: '@/**', group: 'internal' },
+            { pattern: '@config/**', group: 'internal' },
+            { pattern: '@controllers/**', group: 'internal' },
+            { pattern: '@services/**', group: 'internal' },
+            { pattern: '@routes/**', group: 'internal' },
+            { pattern: '@middlewares/**', group: 'internal' },
+            { pattern: '@errors/**', group: 'internal' },
+            { pattern: '@utils/**', group: 'internal' },
+            { pattern: '@constants/**', group: 'internal' },
+            { pattern: '@types/**', group: 'internal' }
           ],
           pathGroupsExcludedImportTypes: ['builtin'],
           'newlines-between': 'always',

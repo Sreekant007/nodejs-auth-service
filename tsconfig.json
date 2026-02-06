@@ -52,6 +52,9 @@
       "@constants/*": [
         "src/constants/*"
       ],
+      "@types": [
+        "src/types/index.ts"
+      ],
       "@types/*": [
         "src/types/*"
       ]

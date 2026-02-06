@@ -1,11 +1,12 @@
-import { errorHandler } from '@/errors/error-handler.js';
-import { BadRequestError, NotFoundError } from '@/errors/http-errors.js';
-import { asyncHandler } from '@/middlewares/async-handler.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+
+import { errorHandler } from '@/errors/error-handler.js';
+import { BadRequestError, NotFoundError } from '@/errors/http-errors.js';
+import { asyncHandler } from '@/middlewares/async-handler.js';
 dotenv.config();
 
 const app = express();
@@ -19,7 +20,7 @@ app.use(morgan('dev'));
 /* Health check */
 app.get(
   '/health-check',
-  asyncHandler(async (_req, res) => {
+  asyncHandler(async (_req, _res) => {
     throw new BadRequestError('This is a test error');
   }),
 );
