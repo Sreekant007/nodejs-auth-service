@@ -7,6 +7,6 @@ export const config = {
     secret: env.JWT_SECRET,
   },
   database: {
-    uri: env.DB_URI,
+    uri: env.DATABASE_URL,
   },
 };
