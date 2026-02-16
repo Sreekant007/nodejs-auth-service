@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { errorHandler } from '@/errors/error-handler.js';
 import { BadRequestError, NotFoundError } from '@/errors/http-errors.js';
 import { asyncHandler } from '@/middlewares/async-handler.js';
+import { rootRouter } from '@/routes/index.js';
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+app.use('/api', rootRouter);
 
 /* Health check */
 app.get(
@@ -27,7 +30,7 @@ app.get(
 
 /* 404 handler */
 app.use((_req, _res) => {
-  throw new NotFoundError();
+  throw new NotFoundError('API route not found');
 });
 /* Global error handler (MUST be last) */
 app.use(errorHandler);
