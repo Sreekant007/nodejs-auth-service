@@ -1,6 +1,6 @@
 import { AllPermissions } from '@/constants/permission.js';
 import { prisma } from '@/db/prisma.js';
-import { ConflictError, NotFoundError } from '@/errors/http-errors.js';
+import { NotFoundError } from '@/errors/http-errors.js';
 
 export class PermissionService {
   prismaClient = prisma;
@@ -35,5 +35,44 @@ export class PermissionService {
 
   async insertPermission(name: string) {
     return await this.prismaClient.permission.create({ data: { name } });
+  }
+
+  async assignRolePermission(roleId: string, permissionIds: string[]) {
+    return await this.prismaClient.$transaction(async (tx) => {
+      const isRoleExist = await tx.role.findUnique({ where: { id: roleId } });
+
+      if (!isRoleExist) throw new NotFoundError('Role does not exist.');
+
+      await tx.rolePermission.deleteMany({
+        where: {
+          roleId: roleId,
+        },
+      });
+
+      const assignRolePermissionResult = await tx.rolePermission.createMany({
+        data: permissionIds.map((id) => ({
+          roleId: roleId,
+          permissionId: id,
+        })),
+        skipDuplicates: true,
+      });
+      return assignRolePermissionResult;
+    });
+  }
+
+  async revokeRolePermission(roleId: string) {
+    return await this.prismaClient.$transaction(async (tx) => {
+      const isRoleExist = await tx.role.findUnique({ where: { id: roleId } });
+
+      if (!isRoleExist) throw new NotFoundError('Role does not exist.');
+
+      const revokeRolePermissionResult = await tx.rolePermission.deleteMany({
+        where: {
+          roleId: roleId,
+        },
+      });
+
+      return revokeRolePermissionResult;
+    });
   }
 }

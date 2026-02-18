@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 
 import { PermissionService } from '@/services/permission.service.js';
 import { successResponse } from '@/utils/apiResponse.js';
+import { logger } from '@/utils/logger.js';
 
 export class PermissionController {
   private readonly service = new PermissionService();
@@ -27,6 +28,40 @@ export class PermissionController {
       const permissionId = String(req.params.id);
       const deletedPermission = await this.service.deletePermission(permissionId);
       successResponse(res, deletedPermission, 'Permission deleted successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async assignRolePermission(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { roleId, permissions } = req.body;
+      const permissionData = await this.service.prismaClient.permission.findMany({
+        where: {
+          name: { in: permissions },
+        },
+      });
+
+      const permissionUUID: string[] = permissionData.map((p) => p.id);
+
+      const assignPermissionResult = await this.service.assignRolePermission(
+        roleId,
+        permissionUUID,
+      );
+
+      successResponse(res, assignPermissionResult, 'Sucessfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async revokeRolePermission(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { roleId } = req.body;
+
+      const revokePermissionResult = await this.service.revokeRolePermission(roleId);
+
+      successResponse(res, revokePermissionResult, 'Sucessfully');
     } catch (error) {
       next(error);
     }

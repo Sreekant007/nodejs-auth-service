@@ -11,10 +11,21 @@ const controller = new PermissionController();
 PermissionRoutes.post('/', asyncHandler(controller.create.bind(controller)));
 
 PermissionRoutes.get('/', asyncHandler(controller.getAllPermissions.bind(controller)));
-// router.get('/:id', controller.getById.bind(controller));
 
-// router.put('/:id', controller.update.bind(controller));
+PermissionRoutes.delete('/:id', asyncHandler(controller.deletePermission.bind(controller)));
 
-PermissionRoutes.delete('/:id', controller.deletePermission.bind(controller));
+PermissionRoutes.post(
+  '/assign-role-permission',
+  asyncHandler(controller.assignRolePermission.bind(controller)),
+);
+PermissionRoutes.post(
+  '/update-role-permission',
+  asyncHandler(controller.assignRolePermission.bind(controller)),
+);
+
+PermissionRoutes.post(
+  '/revoke-role-permission',
+  asyncHandler(controller.revokeRolePermission.bind(controller)),
+);
 
 export default PermissionRoutes;
