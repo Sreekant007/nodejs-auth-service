@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
+import { AllPermissions } from '@/constants/permission.js';
 import { PermissionService } from '@/services/permission.service.js';
 import { successResponse } from '@/utils/apiResponse.js';
 import { logger } from '@/utils/logger.js';
@@ -15,6 +16,14 @@ export class PermissionController {
     }
   }
 
+  async createAllPermission(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const allPermissionInserted = await this.service.insertAllPermissions();
+      successResponse(res, allPermissionInserted, 'All Permission added successfully', 201);
+    } catch (error) {
+      next(error);
+    }
+  }
   async getAllPermissions(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const allPermissions = await this.service.getAllPermissions();
@@ -35,19 +44,13 @@ export class PermissionController {
 
   async assignRolePermission(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { roleId, permissions } = req.body;
-      const permissionData = await this.service.prismaClient.permission.findMany({
-        where: {
-          name: { in: permissions },
-        },
-      });
-
-      const permissionUUID: string[] = permissionData.map((p) => p.id);
-
-      const assignPermissionResult = await this.service.assignRolePermission(
-        roleId,
-        permissionUUID,
-      );
+      const { roleName, permissions } = req.body;
+      let assignPermissionResult = null;
+      if (permissions !== 'ALL') {
+        assignPermissionResult = await this.service.assignRolePermission(roleName, permissions);
+      } else {
+        assignPermissionResult = await this.service.assignAdminPermission(String(roleName));
+      }
 
       successResponse(res, assignPermissionResult, 'Sucessfully');
     } catch (error) {

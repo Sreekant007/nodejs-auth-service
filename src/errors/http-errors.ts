@@ -6,6 +6,12 @@ export class BadRequestError extends AppError {
   }
 }
 
+export class ValidationError extends AppError {
+  constructor(message = 'Validation error', details: unknown) {
+    super(message, 400, false, details);
+  }
+}
+
 export class UnauthorizedError extends AppError {
   constructor(message = 'Unauthorized') {
     super(message, 401);

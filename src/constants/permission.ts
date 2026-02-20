@@ -1,21 +1,21 @@
 const PermissionKeys = {
-  AUTH_LOGIN: 'AUTH_LOGIN',
-  AUTH_REFRESH: 'AUTH_REFRESH',
-  AUTH_LOGOUT: 'AUTH_LOGOUT',
+  AUTH_LOGIN: 'auth.login',
+  AUTH_REFRESH: 'auth.refresh',
+  AUTH_LOGOUT: 'auth.logout',
 
-  USER_CREATE: 'USER_CREATE',
-  USER_READ: 'USER_READ',
-  USER_UPDATE: 'USER_UPDATE',
-  USER_DELETE: 'USER_DELETE',
-  USER_READ_SELF: 'USER_READ_SELF',
-  USER_UPDATE_SELF: 'USER_UPDATE_SELF',
-  USER_DELETE_SELF: 'USER_DELETE_SELF',
+  USER_CREATE: 'user.create',
+  USER_READ: 'user.read',
+  USER_UPDATE: 'user.update',
+  USER_DELETE: 'user.delete',
+  USER_READ_SELF: 'user.read.self',
+  USER_UPDATE_SELF: 'user.update.self',
+  USER_DELETE_SELF: 'user.delete.self',
 
-  ROLE_CREATE: 'ROLE_CREATE',
-  ROLE_UPDATE: 'ROLE_UPDATE',
-  ROLE_DELETE: 'ROLE_DELETE',
-  ROLE_READ: 'ROLE_READ',
-  ROLE_ASSIGN_PERMISSION: 'ROLE_ASSIGN_PERMISSION',
+  ROLE_CREATE: 'role.create',
+  ROLE_UPDATE: 'role.update',
+  ROLE_DELETE: 'role.delete',
+  ROLE_READ: 'role.read',
+  ROLE_ASSIGN_PERMISSION: 'role.assign.permission',
 } as const;
 
 export const AllPermissions = Object.values(PermissionKeys);

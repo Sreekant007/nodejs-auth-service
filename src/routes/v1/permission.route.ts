@@ -9,6 +9,10 @@ const PermissionRoutes = Router();
 const controller = new PermissionController();
 
 PermissionRoutes.post('/', asyncHandler(controller.create.bind(controller)));
+PermissionRoutes.get(
+  '/add-all-permission',
+  asyncHandler(controller.createAllPermission.bind(controller)),
+);
 
 PermissionRoutes.get('/', asyncHandler(controller.getAllPermissions.bind(controller)));
 

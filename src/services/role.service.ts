@@ -10,7 +10,7 @@ export class RoleService {
   async getAllRoles() {
     return await this.prismaClient.role.findMany({
       include: {
-        permissions: {
+        rolePermissions: {
           select: {
             permission: {
               select: {

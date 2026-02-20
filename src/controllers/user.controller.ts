@@ -13,4 +13,13 @@ export class UserController {
       next(error);
     }
   }
+
+  async createUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const createUser = await this.userService.createUser(req.body);
+      successResponse(res, createUser, 'User created successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
 }

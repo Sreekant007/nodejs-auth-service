@@ -8,42 +8,51 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  roleId    String
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @relation(fields: [roleId], references: [id])
+  id           String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String   @unique
+  passwordHash String
+  roleId       String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  role         Role     @relation(fields: [roleId], references: [id])
 
   @@index([roleId])
 }
 
 model Role {
-  id          String           @id @default(uuid())
-  name        String           @unique
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  permissions RolePermission[]
-  users       User[]
+  id              String           @id @default(uuid())
+  name            String           @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  isSystemRole    Boolean          @default(false)
+
+  users           User[]
+  rolePermissions RolePermission[]
 }
 
 model Permission {
-  id        String           @id @default(uuid())
-  name      String           @unique
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  roles     RolePermission[]
+  id              String           @id @default(uuid())
+  name            String           @unique
+  code            String           @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  rolePermissions RolePermission[]
 }
 
 model RolePermission {
   roleId       String
   permissionId String
-  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
   role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
 
   @@id([roleId, permissionId])
-  @@index([roleId])
-  @@index([permissionId])
 }
+

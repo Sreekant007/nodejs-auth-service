@@ -1,8 +1,10 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
     "roleId" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -17,6 +19,7 @@ CREATE TABLE "Role" (
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isSystemRole" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
 );
@@ -25,6 +28,7 @@ CREATE TABLE "Role" (
 CREATE TABLE "Permission" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -35,6 +39,8 @@ CREATE TABLE "Permission" (
 CREATE TABLE "RolePermission" (
     "roleId" TEXT NOT NULL,
     "permissionId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "RolePermission_pkey" PRIMARY KEY ("roleId","permissionId")
 );
@@ -52,10 +58,7 @@ CREATE UNIQUE INDEX "Role_name_key" ON "Role"("name");
 CREATE UNIQUE INDEX "Permission_name_key" ON "Permission"("name");
 
 -- CreateIndex
-CREATE INDEX "RolePermission_roleId_idx" ON "RolePermission"("roleId");
-
--- CreateIndex
-CREATE INDEX "RolePermission_permissionId_idx" ON "RolePermission"("permissionId");
+CREATE UNIQUE INDEX "Permission_code_key" ON "Permission"("code");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

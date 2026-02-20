@@ -16,6 +16,7 @@ export const errorHandler = (err: Error, _req: Request, res: Response, _next: Ne
     return res.status(err.statusCode).json({
       status: 'error',
       message: err.message,
+      error: err.details || {},
     });
   }
 

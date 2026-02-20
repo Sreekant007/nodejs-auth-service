@@ -21,7 +21,7 @@ export class RoleController {
       const roles = await this.roleService.getAllRoles();
       const formatedRole = roles.map((role) => ({
         ...role,
-        permissions: role.permissions.map((p) => p.permission.name),
+        rolePermissions: role.rolePermissions.map((p) => p.permission.name),
       }));
       successResponse(res, formatedRole, 'Roles fetched successfully');
     } catch (error) {

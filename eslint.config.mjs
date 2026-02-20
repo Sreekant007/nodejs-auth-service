@@ -54,7 +54,8 @@ export default [
             { pattern: '@errors/**', group: 'internal' },
             { pattern: '@utils/**', group: 'internal' },
             { pattern: '@constants/**', group: 'internal' },
-            { pattern: '@types/**', group: 'internal' }
+            { pattern: '@types/**', group: 'internal' },
+            { pattern: '@validators/**', group: 'internal' }
           ],
           pathGroupsExcludedImportTypes: ['builtin'],
           'newlines-between': 'always',

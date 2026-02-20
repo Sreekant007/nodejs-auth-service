@@ -1,27 +1,27 @@
 import { AllPermissions } from '@/constants/permission.js';
 import { prisma } from '@/db/prisma.js';
-import { NotFoundError } from '@/errors/http-errors.js';
+import { BadRequestError, ForbiddenError, NotFoundError } from '@/errors/http-errors.js';
+import { logger } from '@/utils/logger.js';
 
 export class PermissionService {
   prismaClient = prisma;
   async insertAllPermissions() {
-    const inserted: string[] = [];
-    const failed: { name: string; error: string }[] = [];
-    const upsertPermissionPromises = AllPermissions.map((name) =>
-      this.prismaClient.permission.upsert({
-        where: { name },
-        update: {},
-        create: { name },
-      }),
-    );
+    const upsertPermissionPromises = this.prismaClient.permission.createMany({
+      data: AllPermissions.map((code) => ({
+        name: code.replace(/\./g, '_').toUpperCase(),
+        code,
+      })),
+    });
 
-    const allPermissionInsert = await Promise.allSettled(upsertPermissionPromises);
-    allPermissionInsert.forEach((result, index) => {
-      if (result.status === 'fulfilled') {
-        inserted.push(AllPermissions[index]);
-      } else {
-        failed.push({ name: AllPermissions[index], error: String(result.reason) });
-      }
+    return upsertPermissionPromises;
+  }
+
+  async assignAdminPermission(roleId: string) {
+    return this.prismaClient.role.update({
+      where: { id: roleId },
+      data: {
+        isSystemRole: true,
+      },
     });
   }
 
@@ -34,29 +34,57 @@ export class PermissionService {
   }
 
   async insertPermission(name: string) {
-    return await this.prismaClient.permission.create({ data: { name } });
+    return await this.prismaClient.permission.create({
+      data: { name: name.replace(/\./g, ' ').toUpperCase(), code: name },
+    });
   }
 
-  async assignRolePermission(roleId: string, permissionIds: string[]) {
+  async assignRolePermission(roleName: string, permissionIds: string[]) {
     return await this.prismaClient.$transaction(async (tx) => {
-      const isRoleExist = await tx.role.findUnique({ where: { id: roleId } });
+      const role = await tx.role.findUnique({ where: { name: roleName } });
 
-      if (!isRoleExist) throw new NotFoundError('Role does not exist.');
+      // if (isRoleExist?.isSystemRole) {
+      //   throw new ForbiddenError('Admin role permission cannot be changed');
+      // }
 
-      await tx.rolePermission.deleteMany({
+      const permissionData = await tx.permission.findMany({
         where: {
-          roleId: roleId,
+          code: { in: permissionIds },
         },
       });
 
-      const assignRolePermissionResult = await tx.rolePermission.createMany({
-        data: permissionIds.map((id) => ({
-          roleId: roleId,
+      const permissionUUID: string[] = permissionData.map((p) => p.id);
+
+      if (!role) throw new NotFoundError('Role does not exist.');
+
+      if (permissionUUID?.length) {
+        const validatePermission = await tx.permission.findMany({
+          where: {
+            id: { in: permissionUUID },
+          },
+        });
+
+        if (validatePermission?.length !== permissionUUID.length) {
+          throw new BadRequestError('One or more permission are invalid');
+        }
+      }
+
+      await tx.rolePermission.deleteMany({
+        where: {
+          roleId: role.id,
+        },
+      });
+
+      if (!permissionUUID?.length) {
+        return { count: 0 };
+      }
+
+      return await tx.rolePermission.createMany({
+        data: permissionUUID.map((id) => ({
+          roleId: role.id,
           permissionId: id,
         })),
-        skipDuplicates: true,
       });
-      return assignRolePermissionResult;
     });
   }
 
